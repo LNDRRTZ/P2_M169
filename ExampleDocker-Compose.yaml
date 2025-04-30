@@ -1,3 +1,5 @@
+*Example 1*
+
 version: '3.8'
 
 networks:
@@ -53,3 +55,36 @@ services:
 volumes:
   db_data:
   moodledata:
+
+
+*Example 2*
+version: "3.8"
+
+services:
+  webserver:
+    image: nginx:latest
+    ports:
+      - "80:80"
+    volumes:
+      - ./www:/usr/share/nginx/html:ro
+      - nginx_logs:/var/log/nginx
+    depends_on:
+      - database
+
+  database:
+    image: mysql:8.0
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD_FILE: /run/secrets/db_root_password
+    volumes:
+      - db_data:/var/lib/mysql
+    secrets:
+      - db_root_password
+
+volumes:
+  db_data:
+  nginx_logs:
+
+secrets:
+  db_root_password:
+    file: ./secrets/db_root_password.txt

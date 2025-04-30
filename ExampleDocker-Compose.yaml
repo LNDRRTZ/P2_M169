@@ -64,14 +64,12 @@ services:
   webserver:
     image: nginx:latest
     ports:
-      - "80:80"
+      - "8080:80"
     volumes:
       - ./www:/usr/share/nginx/html:ro
       - nginx_logs:/var/log/nginx
     depends_on:
       - database
-    ports:
-      - "8188:8080"
 
   database:
     image: mysql:8.0

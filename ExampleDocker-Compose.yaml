@@ -1,4 +1,4 @@
-*Example 1*
+#Example 1
 
 version: '3.8'
 
@@ -57,7 +57,7 @@ volumes:
   moodledata:
 
 
-*Example 2*
+#Example 2
 version: "3.8"
 
 services:

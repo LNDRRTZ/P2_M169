@@ -70,6 +70,8 @@ services:
       - nginx_logs:/var/log/nginx
     depends_on:
       - database
+    ports:
+      - 8188:8080
 
   database:
     image: mysql:8.0

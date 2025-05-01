@@ -10,6 +10,10 @@ docker build -t mein-image .
 -t mein-image gibt deinem Image einen Namen
 . steht für das aktuelle Verzeichnis, in dem das Dockerfile liegt
 
+Portweiterleitungen bei Dockerfiles:
+docker run -p 8080:80 mein-image
+
+
 Docker:
 
 docker network create web-net

@@ -5,6 +5,10 @@ Erstellung folgender Container:
 - PhpMyAdmin
 
 Kann so gestartet werden:
+docker build -t mein-image .
+
+-t mein-image gibt deinem Image einen Namen
+. steht für das aktuelle Verzeichnis, in dem das Dockerfile liegt
 
 Docker:
 

@@ -1,0 +1,53 @@
+Erstellung folgender Container:
+- Netzwerk
+- Datenbank
+- Apache Webserver
+- PhpMyAdmin
+
+Kann so gestartet werden:
+
+Docker:
+
+docker network create web-net
+
+1. MySQL Container – Dockerfile-mysql
+FROM mysql:8.0
+
+ENV MYSQL_ROOT_PASSWORD=rootpass
+ENV MYSQL_DATABASE=webapp
+ENV MYSQL_USER=webuser
+ENV MYSQL_PASSWORD=webpass
+--------------------------------------------------------------
+docker build -t my-mysql -f Dockerfile-mysql .
+docker run -d --name mysql --network web-net my-mysql
+
+2. Apache + PHP – Dockerfile-web
+FROM php:8.2-apache
+
+RUN docker-php-ext-install mysqli pdo pdo_mysql
+RUN a2enmod rewrite
+
+COPY src/ /var/www/html/
+--------------------------------------------------------------
+📁 src/index.php:
+<?php
+$mysqli = new mysqli("mysql", "webuser", "webpass", "webapp");
+
+if ($mysqli->connect_error) {
+    die("Fehler: " . $mysqli->connect_error);
+}
+echo "Verbindung zur DB erfolgreich!";
+?>
+--------------------------------------------------------------
+docker build -t my-web -f Dockerfile-web .
+docker run -d --name web --network web-net -p 8080:80 my-web
+
+3. phpMyAdmin – Dockerfile-phpmyadmin
+FROM phpmyadmin/phpmyadmin
+
+ENV PMA_HOST=mysql
+ENV MYSQL_ROOT_PASSWORD=rootpass
+--------------------------------------------------------------
+docker build -t my-phpmyadmin -f Dockerfile-phpmyadmin .
+docker run -d --name phpmyadmin --network web-net -p 8081:80 my-phpmyadmin
+
